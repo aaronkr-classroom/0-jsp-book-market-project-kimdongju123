@@ -1,73 +1,67 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="dto.Book" %>
-<%@ page import="dao.BookRepository" %>
+<%@ page contentType="text/html; charset=utf-8" %>
+<%@ page import="dto.book" %>
+<%@ page import="dao.BookRepository"%>
 <%@ page import="com.oreilly.servlet.*" %>
 <%@ page import="com.oreilly.servlet.multipart.*" %>
+<%@ page import="java.util.*" %>
 
-<!DOCTYPE html>
-<% 
-	request.setCharacterEncoding("UTF-8");
 
-	String filename="";
-	
-	
-	String realFolder="\\Users\\ijaeseong\\Documents\\GitHub\\0-jsp-book-market-project-bitcoin7661\\
-		.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\
-		BookMarket\\resources\\images"
-	int maxSize = 5 * 1024 * 1024; // 최대 업로드될 파일의 크기 5MB
-	String encType, new DefaultFileRenamePolicy());
-		
-		
-	
-	String bookId=multi.getParameter("bookId");
-	String name=multi.getParameter("name");
-	String unitPrice=multi.getParameter("unitPrice");
-	String author=multi.getParameter("author");
-	String publisher=multi.getParameter("publisher");
-	String releaseDate=multi.getParameter("releaseDate");
-	String description=multi.getParameter("description");
-	String category=multi.getParameter("category");
-	String unitsInStock=multi.getParameter("unitsInStock");
-	String condition=multi.getParameter("condition");
-	
-	Enumeration files="multi.getFileNames();"
-	String fname=(String) files.nextElement();
-	String fileName=multi.getFilesystemName(fnam);
-	
-	Integer price;
-	
-	if (unitPrice.isEmpty())
-		price=0;
-	else
-		price=Integer.valueOf(unitPrice);
-	
-	long stock;
-	
-	if (unitsInStock.isEmpty())
-		stock=0;
-	else 
-		stock=Long.valueOf(unitsInStock);
-	
-BookRepository dao=BookRepository.getInstance();
+<%
+    request.setCharacterEncoding("UTF-8");
 
-	Book newBook=new Book();
-	newBook.setBookId(bookId);
-	newBook.setName(name);
-	newBook.setUnitPrice(price);
-	newBook.setAuthor(author);
-	newBook.setPublisher(publisher);
-	newBook.setReleaseDate(releaseDate);
-	newBook.setDescription(description);
-	newBook.setCategory(category);
-	newBook.setUnitsInStock(stock);
-	newBook.setCondition(condition);
-	newBook.setFilename(fileName);
-	
-	dao.addBook(newBook);
-	
-	response.sendRedirect("books.jsp");
+    String filename="";
+    String realFolder="C:\Users\NOTBOOK\Documents\JSPCLASS\0-jsp-book-market-project-j30n9hn\src\main\webapp\resources\images";
+    int maxSize=5 * 1024 * 1024;
+    String encType = "UTF-8";
+
+    MultipartRequest multi=new MultipartRequest(request, realFolder, maxSize, encType, new DefaultFileRenamePolicy());
+
+
+    String bookId=multi.getParameter("bookId");
+    String name=multi.getParameter("name");
+    String unitPrice=multi.getParameter("unitPrice");
+    String author=multi.getParameter("author");
+    String publisher=multi.getParameter("publisher");
+    String releaseDate=multi.getParameter("releaseDate");
+    String description=multi.getParameter("description");
+    String category=multi.getParameter("category");
+    String unitInStock=multi.getParameter("unitInStock");
+    String condition=multi.getParameter("condition");
+
+    Enumeration files=multi.getFilenames();
+    String fname=(String) files.nextElement();
+    String fileName=multi.getFilesystemName(fname);
+
+    Integer price;
+
+    if(unitPrice.isEmpty())
+        price=0;
+    else
+        price=Integer.valueOf(unitPrice);
+    
+    long stock;
+
+    if(unitInStock.isEmpty())
+        stock=0;
+    else
+        stock=Long.valueOf(unitInStock);
+    
+    BookRepository dao=BookRepository.getInstance();
+
+    Book newBook=new Book();
+    newBook.setBookId(bookId);
+    newBook.setName(name);
+    newBook.setPrice(price);
+    newBook.setAuthor(author);
+    newBook.setPublisher(publisher);
+    newBook.setReleaseDate(releaseDate);
+    newBook.setDescription(description);
+    newBook.setCategory(category);
+    newBook.setUnitsInStock(stock);
+    newBook.setCondition(condition);
+    newBook.setFilename(fileName);
+
+    dao.addBook(newBook);
+
+    response.sendRedirect("books.jsp")
 %>
-	
-		
-	
