@@ -48,7 +48,7 @@
     
     BookRepository dao=BookRepository.getInstance();
 
-    Book newBook=new Book();
+    Book newBook=new book();
     newBook.setBookId(bookId);
     newBook.setName(name);
     newBook.setPrice(price);
@@ -63,5 +63,5 @@
 
     dao.addBook(newBook);
 
-    response.sendRedirect("books.jsp")
+    response.sendRedirect("books.jsp");
 %>

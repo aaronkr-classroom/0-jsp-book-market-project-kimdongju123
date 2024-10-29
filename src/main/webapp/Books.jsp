@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="dto.Book" %>
+<%@ page import="dto.book" %>
 <%@ page import="dao.BookRepository" %>
 <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session" />
 <html>
@@ -20,16 +20,16 @@
             </div>
             <%
                 BookRepository dao=BookRepository.getInstance();
-                ArrayList<Book> listOfBooks=dao.getAllBooks();
+                ArrayList<book> listOfBooks=dao.getAllBooks();
             %>
             <div class="row align-items-md-stretch text-center">
             <%
                 for (int i = 0; i < listOfBooks.size(); i++) {
-                    Book book=listOfBooks.get(i);
+                    book book=listOfBooks.get(i);
             %>
             <div class="col-md-4">
                 <div class="h-100 p-2">
-                    <img src="./resources/images/<%=Book.getFilename() %>" style="width : 250; height : 350" />
+                    <img src="./resources/images/<%=book.getFilename() %>" style="width : 250; height : 350" />
                     <h5><b><%=book.getName()%></b></h5>
                     <p><%=book.getAuthor()%></p>
                     <p><%=book.getPublisher()%> | 35<%=book.getUnitPrice() %>원</p>

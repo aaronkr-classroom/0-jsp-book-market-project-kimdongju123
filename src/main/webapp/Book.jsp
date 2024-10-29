@@ -1,14 +1,14 @@
 <%@ page contentType="text/html; charset=utf-8" %>
-<%@ page import="dto.Book"%>
+<%@ page import="dto.book"%>
 <%@ page import="dao.BookRepository" %>
 
 <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session" />
 
-<htmk>
+<html>
 <head>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css"/>
 
-<titlt>도서 정보</title>
+<title>도서 정보</title>
 </head>
 
 <body>
@@ -25,7 +25,7 @@
     <%
         String id=request.getParameter("id");
         BookRepository dao=BookRepository.getInstance();
-        Book book=dao.getBookById(id);
+        book book=dao.getBookById(id);
     %>
     <div class="row align-items-md-stretch">
         <div class="col-md-5">
