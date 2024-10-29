@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" %>
-<%@ page import="dto.book" %>
+<%@ page import="dto.Book" %>
 <%@ page import="dao.BookRepository"%>
 <%@ page import="com.oreilly.servlet.*" %>
 <%@ page import="com.oreilly.servlet.multipart.*" %>
@@ -48,7 +48,7 @@
     
     BookRepository dao=BookRepository.getInstance();
 
-    Book newBook=new book();
+    Book newBook=new Book();
     newBook.setBookId(bookId);
     newBook.setName(name);
     newBook.setPrice(price);
@@ -63,5 +63,5 @@
 
     dao.addBook(newBook);
 
-    response.sendRedirect("books.jsp");
+    response.sendRedirect("Books.jsp");
 %>

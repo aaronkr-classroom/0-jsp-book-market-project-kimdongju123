@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" %>
-<%@ page import="dto.book"%>
+<%@ page import="dto.Book"%>
 <%@ page import="dao.BookRepository" %>
 
 <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session" />
@@ -25,23 +25,23 @@
     <%
         String id=request.getParameter("id");
         BookRepository dao=BookRepository.getInstance();
-        book book=dao.getBookById(id);
+        Book Book=dao.getBookById(id);
     %>
     <div class="row align-items-md-stretch">
         <div class="col-md-5">
-            <img src="./resources/images/<%=book.getFilename() %>" style="width : 70%">
+            <img src="./resources/images/<%=Book.getFilename() %>" style="width : 70%">
         </div>
         <div class="col-md-6">
-            <h3><b><%=book.getName() %></b></h3>
-            <p> <%=book.getDescription()%>
+            <h3><b><%=Book.getName() %></b></h3>
+            <p> <%=Book.getDescription()%>
             <p> <b>도서코드: </b><span class="badge text-bg-danger">
-            <%=book.getBookId() %></span>
-            <p> <b>저자</b>: <%=book.getAuthor()%>
-            <p> <b>출판사</b>: <%=book.getPublisher()%>
-            <p> <b>출판일</b>: <%=book.getReleaseDate()%>
-            <p> <b>분류</b>: <%=book.getCategory()%>
-            <p> <b>재고수</b>: <%=book.getUnitsInStock()%>
-            <h4><%=book.getUnitPrice() %>원</h4>
+            <%=Book.getBookId() %></span>
+            <p> <b>저자</b>: <%=Book.getAuthor()%>
+            <p> <b>출판사</b>: <%=Book.getPublisher()%>
+            <p> <b>출판일</b>: <%=Book.getReleaseDate()%>
+            <p> <b>분류</b>: <%=Book.getCategory()%>
+            <p> <b>재고수</b>: <%=Book.getUnitsInStock()%>
+            <h4><%=Book.getUnitPrice() %>원</h4>
             <a href="./books.jsp" class="btn btn-secondary">도서 목록</a>
         </div>
     </div>
