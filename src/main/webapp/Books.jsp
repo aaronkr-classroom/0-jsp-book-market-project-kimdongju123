@@ -12,6 +12,17 @@ bootstrap.main.css" rel="stylesheet">
 <meta charset="UTF-8">
 <link rel = "stylesheet" href="./resources/css/bootstrap.min.css" />
 <title>도서 목록</title>
+<script type="text/javascript">
+function addToCart() {
+	if (confirm"도서를 장바구니에 추가하시겠습니까?")) {
+		document.addForm.submit();	
+	}else{
+		document.addForm.reset();
+	}	
+}
+</script>
+
+
 </head>
 <body>
 <div class = "container py-4">
@@ -36,12 +47,19 @@ for(int i = 0; i < listOfBooks.size(); i++){
 <div class = "col-md-4">
   <div class = "h-100 p-2">
   <img src = "./resources/images/<%=book.getFilename() %>" style="width:250; height : 350"/>
+   <h4><%=book.getUnitPrice() %>원</h4>
+    <p><form name="addForm" action="./addCart.jsp?id=<%=book.getBookId() %>" method="post">
+    <a href="#" class="btn btn-info" onclick="addToCart()">도서 주문&raquo;</a>
+    <a href="./cart.jsp" class="btn btn-warning">장바구니 &raquo;</a>
+    <a href="./books.jsp" class="btn btn-secondary"> 도서목록 &raquo;</a>
+    </form>
+    
      <h5><b><%=book.getName() %></b></h5>
      <p> <%=book.getAuthor() %>
      <br><%=book.getPublisher() %> | 35<%=book.getUnitPrice() %>원
      <p> 37<%=book.getDescription().substring(0,60) %>...
-     <p><%=book.getUnitPrice() %>원
-     <p> <a href ="./book.jsp?id=<%=book.getBookId() %>"
+   
+     <a href ="./book.jsp?id=<%=book.getBookId() %>"
      class="btn btn-secondary" role ="button">상세 정보 &raquo;></a>
       </div>
 </div>
