@@ -7,6 +7,10 @@
     <security-constraint>
         <display-name>BookMarket Security</display-name>
         <web-resource-collection>
+        <web-resource-name>BookMarket </web-resource-name>
+        <description></description>
+        <url-pattern>/addBook.jsp</url-pattern>
+        <url-pattern>editBook.jsp</url-pattern>
             <web-resource-name>BookMarket</web-resource-name>
             <description></description>
             <url-pattern>/addBook.jsp</url-pattern>
