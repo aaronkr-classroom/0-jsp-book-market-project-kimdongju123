@@ -1,9 +1,6 @@
 package mvc.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -38,14 +35,27 @@ public class BoardController extends HttpServlet {
             requestBoardWrite(request);
             RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
             rd.forward(request, response);
+
+        } else if (command.equals("/BoardView.do")) { // 게시물 보기
+            RequestDispatcher rd = request.getRequestDispatcher("./board/view.jsp");
+            rd.forward(request, response);
+
+        } else if (command.equals("/BoardUpdateAction.do")) { // 게시물 수정
+            requestBoardUpdate(request);
+            RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
+            rd.forward(request, response);
+
+        } else if (command.equals("/BoardDeleteAction.do")) { // 게시물 삭제
+            requestBoardDelete(request);
+            RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
+            rd.forward(request, response);
         }
     }
 
     // 게시물 목록 가져오기
     public void requestBoardList(HttpServletRequest request) {
         BoardDAO dao = BoardDAO.getInstance();
-        List<BoardDTO> boardList = dao.getBoardList(0, 0, null, null);
-        request.setAttribute("boardList", boardList);
+        request.setAttribute("boardList", dao.getBoardList(0, 0, null, null));
     }
 
     // 새 게시물 등록
@@ -62,5 +72,30 @@ public class BoardController extends HttpServlet {
 
         // 데이터베이스에 새 게시물 등록
         dao.insertBoard(board);
+    }
+
+    // 선택된 게시물 수정
+    public void requestBoardUpdate(HttpServletRequest request) {
+        BoardDAO dao = BoardDAO.getInstance();
+        BoardDTO board = new BoardDTO();
+
+        // 수정할 데이터 받아오기
+        board.setNum(Integer.parseInt(request.getParameter("num"))); // 게시물 번호
+        board.setSubject(request.getParameter("subject"));
+        board.setContent(request.getParameter("content"));
+
+        // 데이터베이스에서 게시물 수정
+        dao.updateBoard(board);
+    }
+
+    // 선택된 게시물 삭제
+    public void requestBoardDelete(HttpServletRequest request) {
+        BoardDAO dao = BoardDAO.getInstance();
+
+        // 삭제할 게시물 번호 받아오기
+        int num = Integer.parseInt(request.getParameter("num"));
+
+        // 데이터베이스에서 게시물 삭제
+        dao.deleteBoard(num);
     }
 }

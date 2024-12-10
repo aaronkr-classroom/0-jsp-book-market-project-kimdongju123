@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import mvc.database.DBconnection;
 
-
 public class BoardDAO {
     private static BoardDAO instance;
 
@@ -112,6 +111,86 @@ public class BoardDAO {
             pstmt.setString(3, dto.getSubject());
             pstmt.setString(4, dto.getContent());
             pstmt.setString(5, dto.getIp());
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // ID로 사용자 이름 가져오기
+    public String getLoginNameById(String id) {
+        String name = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBconnection.getConnection();
+            String query = "SELECT name FROM member WHERE id = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return name;
+    }
+
+    // 게시글 업데이트
+    public void updateBoard(BoardDTO dto) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = DBconnection.getConnection();
+            String query = "UPDATE board SET subject = ?, content = ? WHERE num = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, dto.getSubject());
+            pstmt.setString(2, dto.getContent());
+            pstmt.setInt(3, dto.getNum());
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // 게시물 삭제
+    public void deleteBoard(int num) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = DBconnection.getConnection();
+            String query = "DELETE FROM board WHERE num = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, num);
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
