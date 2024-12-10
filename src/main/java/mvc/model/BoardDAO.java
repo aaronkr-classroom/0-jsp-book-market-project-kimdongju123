@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import mvc.database.DBConnection;
+
+import mvc.database.DBconnection;
+
 
 public class BoardDAO {
     private static BoardDAO instance;
 
-    private BoardDAO() {}
+    private BoardDAO() {
+    }
 
     public static BoardDAO getInstance() {
         if (instance == null) {
@@ -18,16 +21,53 @@ public class BoardDAO {
         return instance;
     }
 
-    public ArrayList<BoardDTO> getBoardList() {
-        ArrayList<BoardDTO> boardList = new ArrayList<>();
+    // 게시글 총 개수 가져오기
+    public int getListCount() {
+        int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try {
-            conn = DBConnection.getConnection();
-            String sql = "SELECT * FROM board ORDER BY num DESC";
-            pstmt = conn.prepareStatement(sql);
+            conn = DBconnection.getConnection();
+            String query = "SELECT COUNT(*) FROM board";
+            pstmt = conn.prepareStatement(query);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return count;
+    }
+
+    // 게시글 리스트 가져오기
+    public ArrayList<BoardDTO> getBoardList(int page, int limit, String items, String text) {
+        ArrayList<BoardDTO> boardList = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        int startRow = (page - 1) * limit; // 페이지 시작 번호
+
+        try {
+            conn = DBconnection.getConnection();
+            String query = "SELECT * FROM board WHERE " + items + " LIKE ? ORDER BY num DESC LIMIT ?, ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, "%" + text + "%");
+            pstmt.setInt(2, startRow);
+            pstmt.setInt(3, limit);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -54,23 +94,24 @@ public class BoardDAO {
                 e.printStackTrace();
             }
         }
+
         return boardList;
     }
 
+    // 새 게시글 등록
     public void insertBoard(BoardDTO dto) {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            conn = DBConnection.getConnection();
-            String sql = "INSERT INTO board (id, name, subject, content, ip) VALUES (?, ?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
+            conn = DBconnection.getConnection();
+            String query = "INSERT INTO board (id, name, subject, content, regist_day, ip) VALUES (?, ?, ?, ?, NOW(), ?)";
+            pstmt = conn.prepareStatement(query);
             pstmt.setString(1, dto.getId());
             pstmt.setString(2, dto.getName());
             pstmt.setString(3, dto.getSubject());
             pstmt.setString(4, dto.getContent());
             pstmt.setString(5, dto.getIp());
-
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

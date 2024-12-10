@@ -29,13 +29,38 @@ public class BoardController extends HttpServlet {
             requestBoardList(request);
             RequestDispatcher rd = request.getRequestDispatcher("./Board/list.jsp");
             rd.forward(request, response);
+
+        } else if (command.equals("/BoardWriteForm.do")) { // 게시물 작성 폼 이동
+            RequestDispatcher rd = request.getRequestDispatcher("./Board/writeForm.jsp");
+            rd.forward(request, response);
+
+        } else if (command.equals("/BoardWriteAction.do")) { // 새 게시물 등록
+            requestBoardWrite(request);
+            RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
+            rd.forward(request, response);
         }
     }
 
     // 게시물 목록 가져오기
     public void requestBoardList(HttpServletRequest request) {
         BoardDAO dao = BoardDAO.getInstance();
-        List<BoardDTO> boardList = dao.getBoardList();
+        List<BoardDTO> boardList = dao.getBoardList(0, 0, null, null);
         request.setAttribute("boardList", boardList);
+    }
+
+    // 새 게시물 등록
+    public void requestBoardWrite(HttpServletRequest request) {
+        BoardDAO dao = BoardDAO.getInstance();
+        BoardDTO board = new BoardDTO();
+
+        // 폼 데이터 받아오기
+        board.setId(request.getParameter("id"));
+        board.setName(request.getParameter("name"));
+        board.setSubject(request.getParameter("subject"));
+        board.setContent(request.getParameter("content"));
+        board.setIp(request.getRemoteAddr());
+
+        // 데이터베이스에 새 게시물 등록
+        dao.insertBoard(board);
     }
 }

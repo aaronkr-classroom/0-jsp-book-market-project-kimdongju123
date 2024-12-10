@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: 0-final-project-kimdongju1234
+Bundle-SymbolicName: 0-final-project-kimdongju1234
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: 0.final.project.kimdongju1234
+Export-Package: bundle,
+ dao,
+ dto,
+ filter

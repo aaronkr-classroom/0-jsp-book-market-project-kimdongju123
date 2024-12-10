@@ -48,3 +48,4 @@ public class LogFilter implements Filter {
     	    calendar.setTimeInMillis(System.currentTimeMillis());
     	    return formatter.format(calendar.getTime());
     	}
+}
